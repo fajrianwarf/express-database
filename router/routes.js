@@ -1,22 +1,9 @@
 const router = require('express').Router();
-const connection = require('../config/mysql')
+const productController = require('../products/controller')
 
-router.get('/', (req, res) => {
-    connection.query({
-        sql: 'SELECT * FROM products'
-    }, (error, result) => {
-        if(error) {
-            res.send({
-                status: 'failed',
-                response: 'failed to fetch data'
-            });
-        }else {
-            res.send({
-                status: 'success',
-                response: 'result'
-            })
-        }
-    })
-});
+router.get('/products', productController.index );
+router.get('/products/:id', productController.view);
+
+router.post('/products/', productController.store);
 
 module.exports = router;
