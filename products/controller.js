@@ -15,10 +15,25 @@ const view = (req, res) => {
 }
 
 const store = (req, res) => {
-    const { id, name, price, stock, status } = req.body
+    const {  name, price, stock, status } = req.body;
     connection.query({
-        sql: 'INSERT INTO products (id, name, price, stock, status) VALUES (?, ?, ?, ?, ?)',
-        values: [id, name, price, stock, status]
+        sql: 'INSERT INTO products ( name, price, stock, status ) VALUES ( ?, ?, ?, ? )',
+        values: [ name, price, stock, status ]
+    }, _response(res));
+}
+
+const update = (req, res) => {
+    const {  name, price, stock, status } = req.body;
+    connection.query({
+        sql: 'UPDATE products SET name = ?, price = ?, stock = ?, status = ? WHERE id = ?',
+        values: [ name, price, stock, status, req.params.id ]
+    }, _response(res));
+}
+
+const destroy = (req, res) => {
+    connection.query({
+        sql: 'DELETE FROM products WHERE id = ?',
+        values: [req.params.id]
     }, _response(res));
 }
 
@@ -41,4 +56,4 @@ const _response = (res) => {
 }
 
 
-module.exports = { index, view, store }
+module.exports = { index, view, store, update ,destroy }
